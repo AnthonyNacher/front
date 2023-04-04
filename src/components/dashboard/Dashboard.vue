@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-5">
-    <span class="text-indigo-600 font-bold text-2xl">Dashboard</span>
+    <span class="text-orange-600 font-bold text-2xl text-center">Tableau de bord APERTURE SCIENCE</span>
     <table class="table-auto">
       <thead>
         <tr>
@@ -25,6 +25,7 @@
             {{ entity.value }}
           </td>
           <td>
+            <!-- BLUE SLIDER - ON -->
             <div v-if="entity.status=='on'">
               <label class="relative inline-flex items-center cursor-pointer">
                 <input
@@ -37,6 +38,8 @@
               
               </label>
             </div>
+            
+            <!-- GREY SLIDER - OFF -->
             <div v-else-if="entity.status=='off'">
               <label class="relative inline-flex items-center cursor-pointer">
                 <input
@@ -49,6 +52,7 @@
               </label>
             </div>
             
+            <!-- RED SLIDER - UNAVAVAILBLE -->
             <div v-else>
               <label class="relative inline-flex items-center cursor-pointer">
                 <input
@@ -56,7 +60,7 @@
                   value=""
                   class="sr-only peer"
                   disabled>
-                <div class="w-11 h-6 bg-red-200 rounded-full peer dark:bg-red-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                <div class="w-6 h-6 bg-red-200 rounded-full peer dark:bg-red-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
               
               </label>
             </div>
