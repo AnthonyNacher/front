@@ -4,7 +4,7 @@
     <table class="table-auto">
       <thead>
         <tr>
-          <th>Nom de l'entité</th>
+          <th>Nom de l'appareil</th>
           <th>Type</th>
           <th>Valeur</th>
           <th>Statut</th>
@@ -16,14 +16,14 @@
           v-for="entity in entities"
           :key="entity.id">
           <td>
-            {{ entity.name }}
+            {{ entity.name.toUpperCase() }}
           </td>
           <td>
-            {{ entity.type }}
+            {{ getFrenchTypeDisplay(entity.type) }}
           </td>
           <td>
-            {{ entity.value }}
-          </td>
+            {{ Number(entity.value).toLocaleString() }} €
+          </td> 
           <td>
             <!-- BLUE SLIDER - ON -->
             <div v-if="entity.status=='on'">
@@ -102,8 +102,23 @@ export default {
         .finally(() => {
           this.isLoading = false
         })
+    },
+    getFrenchTypeDisplay(valueToTranslate)
+    {
+      let translations = {
+        "sensor" : "détecteur",
+        "light" : "lumière",
+        "switch" : "interrupteur",
+        "multimedia" : "multimédia",
+        "air_conditioner" : "climatiseur",
+      }
+      if (valueToTranslate in translations)
+        return translations[valueToTranslate].toUpperCase()
+      else
+        return valueToTranslate.toUpperCase()
     }
-  } 
+  
+  }
 }
 </script>
 
