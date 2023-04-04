@@ -4,4 +4,7 @@ export default {
   getEntities() {
     return coreApiClient.sendRequest("get", "/entities", {})
   },
+  deleteEntity(entity_uuid) {
+    return coreApiClient.sendRequest("delete", "/entities/" + entity_uuid, {})
+  }
 }
