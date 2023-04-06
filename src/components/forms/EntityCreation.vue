@@ -9,7 +9,7 @@
         <p v-if="isHidden">+</p> <p v-if="!isHidden">-</p> Ajouter un nouvel appareil 
       </button>
       <div v-if="!isHidden">
-        <form class="w-1/2">
+        <div class="w-1/2">
           <div class="grid gap-2 mb-2 md:grid-cols-2">        <label
                                                                 for="name"
                                                                 class="block mb-2 text-sm font-medium">Nom de l'appareil</label>
@@ -71,18 +71,17 @@
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
     <!-- ADD FORM- END -->
-
   </div>
 </template>
 <script>
 import coreApi from "@/providers/core-api"
 
 export default {
-  name: "EntityArray",
+  name: "EntityCreation",
   data() {
     return { 
       isHidden: true,
@@ -142,6 +141,12 @@ export default {
       coreApi.glados.createEntity(form_data)
         .then(() => {
           this.$parent.getEntities()
+          this.newEntityName = ""
+          this.newEntityStatus = ""
+          this.newEntityType = ""
+          this.newEntityValue = ""
+          this.isHidden = true
+
         })
         .catch((error) => {
           console.error(error)
@@ -149,6 +154,14 @@ export default {
         })
         .finally(() => {
           this.isLoading = false
+          if (this.isError)
+          {
+            this.addNewMessage("Echec de la création", "Une erreur est survenue lors de la création.", "alert")
+          }
+          else 
+          {
+            this.addNewMessage("Création réussie", "L'appareil a bien été ajouté.", "success")
+          }
         })
     }
     
