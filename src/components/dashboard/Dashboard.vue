@@ -337,7 +337,7 @@ export default {
         return valueToTranslate.toUpperCase()
     },
     updateEntity(entity) {
-      coreApi.glados.updateEntity(entity)
+      coreApi.glados.updateEntity(entity.id, entity)
         .then(() => {
           this.getEntities()
         })
