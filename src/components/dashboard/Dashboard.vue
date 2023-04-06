@@ -78,65 +78,162 @@
           v-for="entity in entities"
           :key="entity.id">
           <td>
-            {{ entity.name.toUpperCase() }}
-          </td>
-          <td>
-            {{ getFrenchTypeDisplay(entity.type) }}
-          </td>
-          <td>
-            {{ Number(entity.value).toLocaleString() }} €
-          </td>
-          <td>
-            <!-- BLUE SLIDER - ON -->
-            <div v-if="entity.status == 'on'">
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  value=""
-                  class="sr-only peer"
-                  checked
-                  disabled>
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                </div>
-
-              </label>
+            <div v-if="entity.editable">
+              <input
+                type="text"
+                v-model="entity.name">
             </div>
-
-            <!-- GREY SLIDER - OFF -->
-            <div v-else-if="entity.status == 'off'">
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  value=""
-                  class="sr-only peer"
-                  disabled>
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                </div>
-
-              </label>
-            </div>
-
-            <!-- RED SLIDER - UNAVAVAILBLE -->
             <div v-else>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  value=""
-                  class="sr-only peer"
-                  disabled>
-                <div class="w-6 h-6 bg-red-200 rounded-full peer dark:bg-red-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                </div>
+              {{ entity.name.toUpperCase() }}
+            </div>
+            
+          </td>
+          <td>
+            
+            <div v-if="entity.editable">
+              <select
+                required
+                name="type"
+                v-model="entity.type">
+                <option
+                  v-for="option in type_options"
+                  :value="option.value"
+                  :key="option"
+                  :selected="option.value === entity.type">{{ option.text }}</option>
+              </select>
+            </div>
+            <div v-else>
+              {{ getFrenchTypeDisplay(entity.type) }}
+            </div>
+            
+          </td>
+          <td>
+            
+            <div v-if="entity.editable">
+              <input
+                type="text"
+                v-model="entity.value">
+            </div>
+            <div v-else>
+              {{ Number(entity.value).toLocaleString() }} €
+            </div>
+            
+          </td>
+          <td>
+            <div v-if="entity.editable">
+              <select
+                required
+                name="status"
+                v-model="entity.status">
+                <option
+                  v-for="option in status_options"
+                  :value="option.value"
+                  :key="option"
+                  :selected="option.value === entity.status">{{  option.text }}</option>
+              </select>
+            </div>
+            <div v-else>
+              <!-- BLUE SLIDER - ON -->
+              <div v-if="entity.status == 'on'">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    class="sr-only peer"
+                    checked
+                    disabled>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                  </div>
 
-              </label>
+                </label>
+              </div>
+
+              <!-- GREY SLIDER - OFF -->
+              <div v-else-if="entity.status == 'off'">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    class="sr-only peer"
+                    disabled>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                  </div>
+
+                </label>
+              </div>
+
+              <!-- RED SLIDER - UNAVAVAILBLE -->
+              <div v-else>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    class="sr-only peer"
+                    disabled>
+                  <div class="w-6 h-6 bg-red-200 rounded-full peer dark:bg-red-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                  </div>
+
+                </label>
+              </div>
             </div>
           </td>
           <td>
             <div>
+              <button
+                @click="prepareUpdateEntity(entity)"
+                v-if="!entity.editable & !this.is_editing_line">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="orange"
+                  class="w-6 h-6">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+
+              </button>
+              <button
+                v-if="entity.editable"
+                @click="updateEntity(entity)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="green"
+                  class="w-6 h-6">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </button>
+              <button 
+                v-if="entity.editable" 
+                @click="cancelUpdateEntity(entity)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="red"
+                  class="w-6 h-6">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12" />
+                </svg>
+
+              </button>
               <button v-on:click="deleteEntity(entity.id)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  fill="currentColor"
+                  fill="orange"
                   class="w-6 h-6">
                   <path
                     fill-rule="evenodd"
@@ -144,6 +241,7 @@
                     clip-rule="evenodd" />
                 </svg>
               </button>
+              
             </div>
           </td>
         </tr>
@@ -168,7 +266,44 @@ export default {
       isLoading: false,
       isError: false,
       messages: {},
-      message_count: 0
+      message_count: 0,
+      is_editing_line: false,
+      type_options: [
+        {
+          value: "sensor",
+          text: "Détecteur"
+        },
+        {
+          value: "light",
+          text: "Lumière"
+        },
+        {
+          value: "switch",
+          text: "Interrupteur"
+        },
+        {
+          value: "multimedia",
+          text: "Multimédia"
+        },
+        {
+          value: "air_conditioner",
+          text: "Climatiseur"
+        },
+      ],
+      status_options: [
+        {
+          value: "on",
+          text: "Allumé"
+        },
+        {
+          value: "off",
+          text: "Éteint"
+        },
+        {
+          value: "unavailable",
+          text: "Indisponible"
+        },
+      ],
     }
   },
   components: { EntityCreation },
@@ -201,6 +336,40 @@ export default {
       else
         return valueToTranslate.toUpperCase()
     },
+    updateEntity(entity) {
+      coreApi.glados.updateEntity(entity)
+        .then(() => {
+          this.getEntities()
+        })
+        .catch((error) => {
+          console.error(error)
+          this.isError = true
+        })
+        .finally(() => {
+          this.isLoading = false
+          entity.editable = false
+          this.is_editing_line = false
+          if (this.isError)
+          {
+            this.addNewMessage("Echec de la mise à jour", "Une erreur est survenue lors de la mise à jour.", "alert")
+          }
+          else 
+          {
+            this.addNewMessage("Mise à jour réussie", "L'appareil a bien été mis à jour.", "success")
+          }
+        })
+    },
+    prepareUpdateEntity(entity)
+    {      
+      entity.editable = true
+      this.is_editing_line = true
+    },
+    cancelUpdateEntity(entity)
+    {
+      entity.editable = false
+      this.getEntities()
+      this.is_editing_line = false
+    },
     deleteEntity(entity_uuid) {
       this.isLoading = true
 
@@ -216,12 +385,11 @@ export default {
           this.isLoading = false
           // maybe a bit slow to do that, deleting the selected object would be better (if response is successfull, such as 204 for example)
           this.getEntities()
-          if (this.isError)
-          {
+          
+          if (this.isError) {
             this.addNewMessage("Echec de la suppression", "Une erreur est survenue lors de la suppression.", "alert")
           }
-          else 
-          {
+          else {
             this.addNewMessage("Suppression réussie", "La suppression a bien été faite.", "success")
           }
         })
