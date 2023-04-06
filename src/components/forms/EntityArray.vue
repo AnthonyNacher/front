@@ -6,7 +6,7 @@
       <button
         class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
         @click="isHidden=!isHidden">
-        Ajouter un nouvel appareil
+        <p v-if="isHidden">+</p> <p v-if="!isHidden">-</p> Ajouter un nouvel appareil 
       </button>
       <div v-if="!isHidden">
         <form class="w-1/2">
