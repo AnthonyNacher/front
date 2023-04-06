@@ -1,5 +1,7 @@
 <template>
   <div class="flex flex-col gap-5">
+    
+    <EntityArray />
     <span class="text-orange-600 font-bold text-2xl text-center">Tableau de bord APERTURE SCIENCE</span>
     <table class="table-auto">
       <thead>
@@ -91,6 +93,7 @@
 
 <script>
 import coreApi from "@/providers/core-api"
+import EntityArray from "@/components/forms/EntityArray.vue"
 
 export default {
   name: "Dashboard",
@@ -104,6 +107,7 @@ export default {
       isError: false 
     }
   },
+  components: { EntityArray },
   methods: { 
     getEntities() {
       this.isLoading = true
@@ -139,7 +143,7 @@ export default {
 
       coreApi.glados.deleteEntity(entity_uuid)
         .then(() => {
-          alert("Suppression effectuée")
+          
         })
         .catch((error) => {
           console.error(error)
