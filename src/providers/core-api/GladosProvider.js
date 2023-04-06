@@ -9,5 +9,8 @@ export default {
   },
   createEntity(data) {
     return coreApiClient.sendRequest("post", "/entities", data)
+  },
+  updateEntity(data) {
+    return coreApiClient.sendRequest("put", "/entities", data)
   }
 }
