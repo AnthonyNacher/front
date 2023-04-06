@@ -6,5 +6,8 @@ export default {
   },
   deleteEntity(entity_uuid) {
     return coreApiClient.sendRequest("delete", "/entities/" + entity_uuid, {})
+  },
+  createEntity(data) {
+    return coreApiClient.sendRequest("post", "/entities", data)
   }
 }
