@@ -65,6 +65,7 @@
     <table class="table-auto">
       <thead>
         <tr>
+          <th>Pièce de l'appareil</th>
           <th>Nom de l'appareil</th>
           <th>Type</th>
           <th>Valeur</th>
@@ -77,6 +78,25 @@
           class="text-center"
           v-for="entity in entities"
           :key="entity.id">
+          <td>
+            
+            <div v-if="entity.editable">
+              <select
+                required
+                name="type"
+                v-model="entity.room">
+                <option
+                  v-for="room in rooms"
+                  :value="room.id"
+                  :key="room.id"
+                  :selected="room.id === entity.room">{{ room.name }}</option>
+              </select>
+            </div>
+            <div v-else>
+              {{ getRoomDisplay(entity.room) }}
+            </div>
+            
+          </td>
           <td>
             <div v-if="entity.editable">
               <input
@@ -259,10 +279,12 @@ export default {
   name: "Dashboard",
   created() {
     this.getEntities()
+    this.getRooms()
   },
   data() {
     return {
       entities: [],
+      rooms: [],
       isLoading: false,
       isError: false,
       messages: {},
@@ -322,6 +344,32 @@ export default {
         .finally(() => {
           this.isLoading = false
         })
+    },
+    getRooms() {
+      this.isLoading = true
+
+      coreApi.glados.getRooms()
+        .then((rooms) => {
+          this.rooms = rooms
+        })
+        .catch((error) => {
+          console.error(error)
+          this.isError = true
+        })
+        .finally(() => {
+          console.log(this.rooms)
+          this.isLoading = false
+        })
+    },
+    getRoomDisplay(valueToTranslate){
+      for (let room of this.rooms)
+      {
+        if (room.id == valueToTranslate)
+        {
+          return room.name.toUpperCase()
+        }
+      }
+      return "Aucune pièce attribuée"
     },
     getFrenchTypeDisplay(valueToTranslate) {
       let translations = {
