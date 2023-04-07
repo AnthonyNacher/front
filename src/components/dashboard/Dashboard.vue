@@ -61,6 +61,7 @@
       </div>
     </div>
     <EntityCreation />
+    <RoomCreation />
     <span class="text-orange-600 font-bold text-2xl text-center">Tableau de bord APERTURE SCIENCE</span>
     <table class="table-auto">
       <thead>
@@ -83,7 +84,7 @@
             <div v-if="entity.editable">
               <select
                 required
-                name="type"
+                name="room"
                 v-model="entity.room">
                 <option
                   v-for="room in rooms"
@@ -274,6 +275,7 @@
 <script>
 import coreApi from "@/providers/core-api"
 import EntityCreation from "@/components/forms/EntityCreation.vue"
+import RoomCreation from "@/components/forms/RoomCreation.vue"
 
 export default {
   name: "Dashboard",
@@ -328,7 +330,7 @@ export default {
       ],
     }
   },
-  components: { EntityCreation },
+  components: { EntityCreation, RoomCreation },
   methods: {
     getEntities() {
       this.isLoading = true

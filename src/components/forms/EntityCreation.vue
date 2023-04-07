@@ -45,6 +45,8 @@
                 :value="option.value"
                 :key="option">{{ option.text }}</option>
             </select>
+
+            
             <label
               for="value"
               class="block mb-2 text-sm font-medium">Valeur de l'appareil</label>
@@ -53,6 +55,21 @@
               type="number"
               name="value"
               v-model="newEntityValue">
+            <label
+              for="room"
+              class="block mb-2 text-sm font-medium">Pièce de l'appareil</label>
+            <select
+              required
+              class="bg-orange-50 border border-orange-500 text-orange-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-1 dark:bg-orange-500 dark:border-orange-600 dark:placeholder-orange-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
+              name="room"
+              v-model="newEntityRoom">
+              <!-- Find a better way to do that, that's awful -->
+              <option value="00000000-0000-0000-0000-000000000001" selected>Aucune pièce attribuée</option>
+              <option
+                  v-for="room in rooms"
+                  :value="room.id"
+                  :key="room.id">{{ room.name }}</option>
+            </select>
             <div class="flex justify-center items-center">
               <button
                 @click="createEntity"
@@ -82,13 +99,18 @@ import coreApi from "@/providers/core-api"
 
 export default {
   name: "EntityCreation",
+  created() {
+    this.getRooms()
+  },
   data() {
     return { 
       isHidden: true,
+      rooms : [],
       newEntityName: "",
       newEntityStatus: "",
       newEntityType: "",
       newEntityValue: "",
+      newEntityRoom: "",
       type_options: [
         {
           value: "sensor",
@@ -136,6 +158,7 @@ export default {
         status: this.newEntityStatus,
         type: this.newEntityType,
         value: this.newEntityValue,
+        room : this.newEntityRoom
       }
 
       coreApi.glados.createEntity(form_data)
@@ -145,6 +168,7 @@ export default {
           this.newEntityStatus = ""
           this.newEntityType = ""
           this.newEntityValue = ""
+          this.newEntityRoom = ""
           this.isHidden = true
 
         })
@@ -156,14 +180,30 @@ export default {
           this.isLoading = false
           if (this.isError)
           {
-            this.addNewMessage("Echec de la création", "Une erreur est survenue lors de la création.", "alert")
+            this.$parent.addNewMessage("Echec de la création", "Une erreur est survenue lors de la création.", "alert")
           }
           else 
           {
-            this.addNewMessage("Création réussie", "L'appareil a bien été ajouté.", "success")
+            this.$parent.addNewMessage("Création réussie", "L'appareil a bien été ajouté.", "success")
           }
         })
-    }
+    },
+    getRooms() {
+      this.isLoading = true
+
+      coreApi.glados.getRooms()
+        .then((rooms) => {
+          this.rooms = rooms
+        })
+        .catch((error) => {
+          console.error(error)
+          this.isError = true
+        })
+        .finally(() => {
+          console.log(this.rooms)
+          this.isLoading = false
+        })
+    },
     
   }
 }
