@@ -10,10 +10,9 @@
           'bg-green-100 border-green-400 text-green-700': message.type === 'success',
           'bg-blue-100 border-blue-400 text-blue-700': message.type === 'information'
         }"
-        class="px-4 py-3 rounded relative border"
-        >
-       <div><strong class="font-bold"> {{ message.header }}</strong>
-        <div class="block"> {{ message.content }}</div></div>
+        class="px-4 py-3 rounded relative border">
+        <div><strong class="font-bold"> {{ message.header }}</strong>
+          <div class="block"> {{ message.content }}</div></div>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
           <svg
             class="fill-current h-6 w-6 text-red-500"
