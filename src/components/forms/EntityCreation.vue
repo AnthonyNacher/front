@@ -64,11 +64,13 @@
               name="room"
               v-model="newEntityRoom">
               <!-- Find a better way to do that, that's awful -->
-              <option value="00000000-0000-0000-0000-000000000001" selected>Aucune pièce attribuée</option>
               <option
-                  v-for="room in rooms"
-                  :value="room.id"
-                  :key="room.id">{{ room.name }}</option>
+                value="00000000-0000-0000-0000-000000000001"
+                selected>Aucune pièce attribuée</option>
+              <option
+                v-for="room in rooms"
+                :value="room.id"
+                :key="room.id">{{ room.name }}</option>
             </select>
             <div class="flex justify-center items-center">
               <button
@@ -105,7 +107,7 @@ export default {
   data() {
     return { 
       isHidden: true,
-      rooms : [],
+      rooms: [],
       newEntityName: "",
       newEntityStatus: "",
       newEntityType: "",
@@ -158,7 +160,7 @@ export default {
         status: this.newEntityStatus,
         type: this.newEntityType,
         value: this.newEntityValue,
-        room : this.newEntityRoom
+        room: this.newEntityRoom
       }
 
       coreApi.glados.createEntity(form_data)

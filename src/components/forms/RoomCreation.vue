@@ -58,9 +58,7 @@ export default {
     
     createRoom() {
       this.isLoading = true
-      let form_data= {
-        name: this.newRoomName
-      }
+      let form_data= { name: this.newRoomName }
 
       coreApi.glados.createRoom(form_data)
         .then(() => {
