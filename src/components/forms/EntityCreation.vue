@@ -202,7 +202,6 @@ export default {
           this.isError = true
         })
         .finally(() => {
-          console.log(this.rooms)
           this.isLoading = false
         })
     },

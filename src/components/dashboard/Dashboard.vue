@@ -234,7 +234,9 @@
         </tr>
       </tbody>
     </table>
-
+    <button
+      class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+      @click="speakSummarizedEntities()">Je préfère entendre que voir.</button>
   </div>
 </template>
 
@@ -248,6 +250,14 @@ export default {
   created() {
     this.getEntities()
     this.getRooms()
+    this.isSpeaking = false
+    this.speechSynthesis = new SpeechSynthesisUtterance()
+    this.speechSynthesis.lang = "fr-FR"
+    this.speechSynthesis.text = ""
+    this.speechSynthesis.volume = 0.3
+    this.speechSynthesis.onend = () => {
+      this.isSpeaking = false
+    }
   },
   data() {
     return {
@@ -316,6 +326,23 @@ export default {
           this.isLoading = false
         })
     },
+    speakSummarizedEntities(){
+      if (!this.isSpeaking)
+      {
+        coreApi.glados.getTTS()
+          .then((data) => {
+            this.speechSynthesis.text = data.text
+            this.isSpeaking = true
+            window.speechSynthesis.speak(this.speechSynthesis)
+          })
+          .catch((error) => {
+            console.error(error)
+            this.isError = true
+          })
+          .finally(() => {
+          })
+      }
+    },
     getRooms() {
       this.isLoading = true
 
@@ -328,7 +355,6 @@ export default {
           this.isError = true
         })
         .finally(() => {
-          console.log(this.rooms)
           this.isLoading = false
         })
     },

@@ -12,9 +12,8 @@ export default {
   },
   updateEntity(entity_uuid, data) {
     return coreApiClient.sendRequest("put", "/entities/" + entity_uuid, data)
-  }, 
-  getRooms()
-  {
+  },
+  getRooms() {
     return coreApiClient.sendRequest("get", "/rooms", {})
   },
   deleteRoom(room_uuid) {
@@ -25,6 +24,9 @@ export default {
   },
   updateRoom(room_uuid, data) {
     return coreApiClient.sendRequest("put", "/rooms/" + room_uuid, data)
-  }, 
+  },
+  getTTS() {
+    return coreApiClient.sendRequest("get", "/getTTS", {})
+  },
 
 }
