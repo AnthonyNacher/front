@@ -406,6 +406,7 @@ export default {
     },
     prepareUpdateEntity(entity)
     {      
+      this.getRooms()
       entity.editable = true
       this.is_editing_line = true
     },
