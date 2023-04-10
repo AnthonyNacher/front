@@ -41,6 +41,13 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="!entities.length">
+          <td 
+            colspan="6" 
+            class="text-center">
+            Aucun appareil enregistré.
+          </td>
+        </tr>
         <tr
           class="text-center"
           v-for="entity in entities"
@@ -406,6 +413,7 @@ export default {
     },
     prepareUpdateEntity(entity)
     {      
+      this.getRooms()
       entity.editable = true
       this.is_editing_line = true
     },

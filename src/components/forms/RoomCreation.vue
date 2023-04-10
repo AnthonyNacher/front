@@ -57,6 +57,7 @@ export default {
   methods: {
     
     createRoom() {
+      this.isError = false
       this.isLoading = true
       let form_data= { name: this.newRoomName }
 

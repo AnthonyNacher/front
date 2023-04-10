@@ -155,6 +155,7 @@ export default {
     
     createEntity() {
       this.isLoading = true
+      this.isError = false
       let form_data= {
         name: this.newEntityName,
         status: this.newEntityStatus,
